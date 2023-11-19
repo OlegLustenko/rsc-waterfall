@@ -1,0 +1,69 @@
+{
+  "root": true,
+  "extends": [
+    "sonarqube",
+    "plugin:sonarjs/recommended",
+    "plugin:@typescript-eslint/recommended",
+    "plugin:prettier/recommended",
+    // we are not using regular `next' or `next/web-vitals' because react hooks rules is conflicting with sonarqube
+    // at some point eslint merging rules stop worked as expected
+    // the only difference is exhaustive-deps is warn in sonarqube config
+    // https://github.com/SonarSource/eslint-config-sonarqube/blob/master/index.js#L229
+    // potentially we would like to get back to next/core-web-vitals, uncomment line below and check if we're still having conflicts
+    // "next/core-web-vitals"
+    "plugin:@next/next/recommended"
+  ],
+  "plugins": ["sonarjs", "@typescript-eslint"],
+  "parser": "@typescript-eslint/parser",
+  "parserOptions": {
+    "ecmaversion": 2018,
+    "sourceType": "module",
+    "ecmaFeatures": {
+      "jsx": true
+    }
+  },
+  "env": {
+    "browser": true,
+    "node": true,
+    "jest/globals": true
+  },
+  "settings": {
+    "react": {
+      "version": "detect"
+    },
+    "import/resolver": {
+      "typescript": {
+        "alwaysTryTypes": true
+      }
+    }
+  },
+  "globals": {
+    "globalThis": true
+  },
+  "rules": {
+    "react/function-component-definition": "off",
+    "react/jsx-boolean-value": "off",
+    "testing-library/render-result-naming-convention": "off",
+    "testing-library/no-debugging-utils": "off",
+    "camelcase": "off",
+    "react/react-in-jsx-scope": "off"
+  },
+  "overrides": [
+    {
+      "files": ["**/*.test.ts"],
+      "rules": {
+        "@typescript-eslint/ban-ts-comment": "off",
+        "sonarjs/no-duplicate-string": "off"
+      }
+    },
+    {
+      "files": ["**/*.e2e.ts", "**/*.e3e.ts"],
+      "rules": {
+        "@typescript-eslint/ban-ts-comment": "off",
+        "sonarjs/no-duplicate-string": "off",
+        "testing-library/prefer-screen-queries": "off",
+        "no-await-in-loop": "off"
+      }
+    }
+  ]
+}
